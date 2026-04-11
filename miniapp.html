@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>MOYSIZ | Odometer Skaner</title>
+    
+    <!-- Telegram SDK -->
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@700&display=swap" rel="stylesheet">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/design-system.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/animations.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/miniapp.css') }}">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="miniapp-body">
+    <!-- Camera Viewport -->
+    <div class="viewport-container" id="viewport">
+        <video id="camera-stream" autoplay playsinline muted></video>
+        
+        <div class="scanner-overlay" id="scanner-overlay">
+            <div class="scan-frame" id="scan-frame">
+                <div class="scan-line"></div>
+            </div>
+            <div class="text-small mt-6" style="margin-top: 20px; text-shadow: 0 2px 4px rgba(0,0,0,0.8);">
+                Odometrni ramka ichiga keltiring
+            </div>
+        </div>
+        
+        <div class="scanner-hud">
+            <div class="badge badge-info animate-pulse">OCR SCANNER v2.0</div>
+        </div>
+    </div>
+    
+    <!-- Scanner Controls -->
+    <div class="scanner-controls" id="controls">
+        <button class="btn-scan" id="capture-btn">
+            <i data-lucide="camera" style="width: 32px; height: 32px;"></i>
+        </button>
+        <div class="text-center text-micro text-disabled" style="text-align: center;">
+            Rasmga olish uchun markazdagi tugmani bosing
+        </div>
+    </div>
+    
+    <!-- Result Layer (Hidden by default) -->
+    <div class="result-layer" id="result-layer">
+        <div class="badge badge-success mb-6">Muvaffaqiyatli aniqlandi</div>
+        <img id="capture-preview" class="captured-image-preview">
+        <div class="result-mileage" id="mileage-result">000 000</div>
+        <div class="text-muted mb-8">aniqlangan km</div>
+        
+        <div class="flex flex-col gap-4 w-full" style="width: 100%;">
+            <button class="btn btn-primary w-full" id="confirm-btn">
+                <i data-lucide="check"></i>
+                <span>Tasdiqlash va yuborish</span>
+            </button>
+            <button class="btn btn-secondary w-full" id="retry-btn">
+                <i data-lucide="refresh-cw"></i>
+                <span>Qayta skanerlash</span>
+            </button>
+        </div>
+    </div>
+    
+    <!-- Debug Layer -->
+    <div id="debug-info" style="position: fixed; top: 0; left: 0; font-size: 8px; color: red; pointer-events: none; z-index: 1000;"></div>
+
+    <script src="{{ url_for('static', filename='js/miniapp.js') }}"></script>
+    <script>
+        lucide.createIcons();
+        
+        // Initialize Telegram WebApp
+        if (window.Telegram && window.Telegram.WebApp) {
+            const tg = window.Telegram.WebApp;
+            tg.expand();
+            tg.ready();
+            
+            // Set theme colors
+            document.documentElement.style.setProperty('--accent-primary', tg.themeParams.button_color || '#3b82f6');
+            
+            // Handle Back Button
+            tg.BackButton.onClick(() => {
+                if (document.getElementById('result-layer').classList.contains('active')) {
+                    document.getElementById('retry-btn').click();
+                } else {
+                    tg.close();
+                }
+            });
+        }
+    </script>
+</body>
+</html>

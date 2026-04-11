@@ -1,0 +1,276 @@
+{% extends "base.html" %}
+
+{% block title %}Boshqaruv paneli{% endblock %}
+{% block header_title %}Platforma tahlili{% endblock %}
+
+{% block content %}
+<!-- KPI Section -->
+<div class="dashboard-grid">
+    <div class="card stats-card">
+        <div class="flex justify-between items-center">
+            <div class="icon-wrapper" style="background: rgba(59, 130, 246, 0.1); color: var(--accent-primary);">
+                <i data-lucide="users"></i>
+            </div>
+            <div class="trend trend-up">
+                <i data-lucide="trending-up"></i>
+                <span>+12%</span>
+            </div>
+        </div>
+        <div>
+            <div class="value counter" data-target="{{ stats.total_users }}">0</div>
+            <div class="label">Jami foydalanuvchilar</div>
+        </div>
+        <div class="progress-container">
+            <div class="progress-bar" style="width: 78%;"></div>
+        </div>
+    </div>
+
+    <div class="card stats-card">
+        <div class="flex justify-between items-center">
+            <div class="icon-wrapper" style="background: rgba(16, 185, 129, 0.1); color: var(--color-success);">
+                <i data-lucide="wrench"></i>
+            </div>
+            <div class="trend trend-up">
+                <i data-lucide="trending-up"></i>
+                <span>+5%</span>
+            </div>
+        </div>
+        <div>
+            <div class="value counter" data-target="{{ stats.total_services }}">0</div>
+            <div class="label">STO markazlari</div>
+        </div>
+        <div class="progress-container">
+            <div class="progress-bar" style="width: 62%; background: var(--color-success);"></div>
+        </div>
+    </div>
+
+    <div class="card stats-card">
+        <div class="flex justify-between items-center">
+            <div class="icon-wrapper" style="background: rgba(99, 102, 241, 0.1); color: var(--accent-secondary);">
+                <i data-lucide="car"></i>
+            </div>
+            <div class="badge badge-info">Yangi</div>
+        </div>
+        <div>
+            <div class="value counter" data-target="{{ stats.total_vehicles }}">0</div>
+            <div class="label">Ro'yxatdan o'tgan avtolar</div>
+        </div>
+        <div class="progress-container">
+            <div class="progress-bar" style="width: 45%; background: var(--accent-secondary);"></div>
+        </div>
+    </div>
+
+    <div class="card stats-card">
+        <div class="flex justify-between items-center">
+            <div class="icon-wrapper" style="background: rgba(245, 158, 11, 0.1); color: var(--color-warning);">
+                <i data-lucide="droplets"></i>
+            </div>
+            <div class="trend trend-up">
+                <i data-lucide="trending-up"></i>
+                <span>+24%</span>
+            </div>
+        </div>
+        <div>
+            <div class="value counter" data-target="{{ stats.total_logs }}">0</div>
+            <div class="label">Moy almashtirishlar</div>
+        </div>
+        <div class="progress-container">
+            <div class="progress-bar" style="width: 89%; background: var(--color-warning);"></div>
+        </div>
+    </div>
+</div>
+
+<!-- Charts Section -->
+<div class="charts-grid">
+    <div class="card">
+        <div class="flex justify-between items-center mb-6" style="margin-bottom: var(--sp-6);">
+            <h3>Foydalanish dinamikasi</h3>
+            <div class="badge badge-info">12 oy</div>
+        </div>
+        <div style="height: 300px; position: relative;">
+            <canvas id="growthChart"></canvas>
+        </div>
+    </div>
+    
+    <div class="card">
+        <div class="flex justify-between items-center mb-6" style="margin-bottom: var(--sp-6);">
+            <h3>Hududlar bo'yicha</h3>
+            <i data-lucide="map" class="text-disabled"></i>
+        </div>
+        <div style="height: 300px; position: relative;">
+            <canvas id="regionChart"></canvas>
+        </div>
+    </div>
+</div>
+
+<!-- Bottom Section: Top Services & Activity -->
+<div class="grid" style="grid-template-columns: 2fr 1fr; gap: var(--sp-6);">
+    <div class="card">
+        <div class="flex justify-between items-center mb-6" style="margin-bottom: var(--sp-6);">
+            <h3>Eng faol STO markazlari</h3>
+            <a href="{{ url_for('services_list') }}" class="btn btn-ghost btn-small">Barchasi</a>
+        </div>
+        <div class="table-container">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Servis nomi</th>
+                        <th>Hudud</th>
+                        <th>Xizmatlar</th>
+                        <th>Reyting</th>
+                        <th>Holat</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for service in top_services %}
+                    <tr>
+                        <td>
+                            <div class="font-semibold">{{ service.name }}</div>
+                            <div class="text-micro text-disabled">+998 {{ service.phone }}</div>
+                        </td>
+                        <td>{{ service.region }}</td>
+                        <td>{{ service.count }}</td>
+                        <td>
+                            <div class="flex items-center gap-1">
+                                <span class="text-warning">★</span>
+                                <span>{{ service.rating }}</span>
+                            </div>
+                        </td>
+                        <td>
+                            <span class="badge badge-active">Aktiv</span>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+    <div class="card">
+        <div class="flex justify-between items-center mb-6" style="margin-bottom: var(--sp-6);">
+            <h3>Oxirgi faollik</h3>
+            <i data-lucide="clock" class="text-disabled"></i>
+        </div>
+        <div class="activity-feed">
+            <!-- Mock Activity -->
+            <div class="activity-item" style="display: flex; gap: var(--sp-4); padding: var(--sp-3) 0; border-bottom: 1px solid var(--border-default);">
+                <div class="avatar" style="flex-shrink: 0; width: 24px; height: 24px; font-size: 10px;">UZ</div>
+                <div>
+                    <div class="text-small"><span class="font-semibold">90 Q123AA</span> moy almashtirdi</div>
+                    <div class="text-micro text-disabled">5 daqiqa oldin ● Toshkent</div>
+                </div>
+            </div>
+            <div class="activity-item" style="display: flex; gap: var(--sp-4); padding: var(--sp-3) 0; border-bottom: 1px solid var(--border-default);">
+                <div class="avatar" style="flex-shrink: 0; width: 24px; height: 24px; font-size: 10px; background: var(--color-success);">AS</div>
+                <div>
+                    <div class="text-small"><span class="font-semibold">Yangi haydovchi</span> ro'yxatdan o'tdi</div>
+                    <div class="text-micro text-disabled">12 daqiqa oldin ● Samarqand</div>
+                </div>
+            </div>
+            <div class="activity-item" style="display: flex; gap: var(--sp-4); padding: var(--sp-3) 0; border-bottom: 1px solid var(--border-default);">
+                <div class="avatar" style="flex-shrink: 0; width: 24px; height: 24px; font-size: 10px;">AJ</div>
+                <div>
+                    <div class="text-small"><span class="font-semibold">01 A777BA</span> uchun eslatma yuborildi</div>
+                    <div class="text-micro text-disabled">45 daqiqa oldin ● Tizim</div>
+                </div>
+            </div>
+            <div class="activity-item" style="display: flex; gap: var(--sp-4); padding: var(--sp-3) 0;">
+                <div class="avatar" style="flex-shrink: 0; width: 24px; height: 24px; font-size: 10px; background: var(--color-warning);">MB</div>
+                <div>
+                    <div class="text-small"><span class="font-semibold">MoyServis</span> yangi izoh oldi</div>
+                    <div class="text-micro text-disabled">1 soat oldin ● Farg'ona</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    // KPI Counters animation
+    const counters = document.querySelectorAll('.counter');
+    counters.forEach(counter => {
+        const target = +counter.getAttribute('data-target');
+        const increment = target / 50;
+        
+        const updateCounter = () => {
+            const count = +counter.innerText;
+            if (count < target) {
+                counter.innerText = Math.ceil(count + increment);
+                setTimeout(updateCounter, 20);
+            } else {
+                counter.innerText = target.toLocaleString('uz-UZ');
+            }
+        };
+        updateCounter();
+    });
+
+    // Growth Chart
+    const ctxGrowth = document.getElementById('growthChart').getContext('2d');
+    const growthChart = new Chart(ctxGrowth, {
+        type: 'line',
+        data: {
+            labels: [{% for item in monthly %}"{{ item.month }}"{% if not loop.last %}, {% endif %}{% endfor %}],
+            datasets: [{
+                label: 'Yangi foydalanuvchilar',
+                data: [{% for item in monthly %}{{ item.count }}{% if not loop.last %}, {% endif %}{% endfor %}],
+                fill: true,
+                borderColor: '#3b82f6',
+                backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                tension: 0.4,
+                pointRadius: 4,
+                pointHoverRadius: 6,
+                borderWidth: 3
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    grid: { color: 'rgba(255, 255, 255, 0.05)' },
+                    ticks: { color: '#94a3b8' }
+                },
+                x: {
+                    grid: { display: false },
+                    ticks: { color: '#94a3b8' }
+                }
+            }
+        }
+    });
+
+    // Region Chart
+    const ctxRegion = document.getElementById('regionChart').getContext('2d');
+    const regionChart = new Chart(ctxRegion, {
+        type: 'doughnut',
+        data: {
+            labels: [{% for reg, count in regions[:5] %}"{{ reg }}"{% if not loop.last %}, {% endif %}{% endfor %}],
+            datasets: [{
+                data: [{% for reg, count in regions[:5] %}{{ count }}{% if not loop.last %}, {% endif %}{% endfor %}],
+                backgroundColor: [
+                    '#3b82f6', '#6366f1', '#10b981', '#f59e0b', '#ef4444'
+                ],
+                borderWidth: 0,
+                hoverOffset: 10
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    labels: { color: '#94a3b8', padding: 20 }
+                }
+            },
+            cutout: '70%'
+        }
+    });
+</script>
+{% endblock %}

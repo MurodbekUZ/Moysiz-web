@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MOYSIZ — Avtomobil moyini almashtirish nazorati</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/design-system.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/animations.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/components.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/landing.css') }}">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <style>
+        .nav-landing {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 80px;
+            z-index: 1000;
+            transition: var(--duration-normal);
+            display: flex;
+            align-items: center;
+            padding: 0 var(--sp-8);
+        }
+        
+        .nav-landing.scrolled {
+            background: rgba(10, 12, 20, 0.8);
+            backdrop-filter: blur(12px);
+            height: 64px;
+            border-bottom: 1px solid var(--border-default);
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: var(--sp-8);
+            margin: 0 auto;
+        }
+        
+        .nav-links a {
+            color: var(--text-secondary);
+            font-weight: var(--fw-medium);
+            transition: var(--transition-colors);
+        }
+        
+        .nav-links a:hover {
+            color: var(--text-primary);
+        }
+    </style>
+</head>
+<body class="animate-fade-in">
+    <!-- Navigation -->
+    <nav class="nav-landing" id="landing-nav">
+        <div class="logo-container">
+            <svg width="40" height="40" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M16 4L6 14V26C6 27.1046 6.89543 28 8 28H24C25.1046 28 26 27.1046 26 26V14L16 4Z" fill="url(#logo-gradient)"/>
+                <path d="M16 10L10 16" stroke="white" stroke-width="2" stroke-linecap="round"/>
+                <circle cx="16" cy="20" r="4" stroke="white" stroke-width="2"/>
+                <defs>
+                    <linearGradient id="logo-gradient" x1="6" y1="4" x2="26" y2="28" gradientUnits="userSpaceOnUse">
+                        <stop stop-color="#3B82F6"/>
+                        <stop offset="1" stop-color="#6366F1"/>
+                    </linearGradient>
+                </defs>
+            </svg>
+            <span style="font-size: 1.5rem;">MOYSIZ</span>
+        </div>
+        
+        <div class="nav-links hidden-tablet">
+            <a href="#about">Biz haqimizda</a>
+            <a href="#how-it-works">Qanday ishlaydi?</a>
+            <a href="#features">Imkoniyatlar</a>
+            <a href="#for-sto">STO uchun</a>
+        </div>
+        
+        <div class="flex gap-4">
+            <a href="{{ url_for('login') }}" class="btn btn-ghost animate-fade-in">Kirish</a>
+            <a href="https://t.me/Moysizbot" class="btn btn-primary animate-fade-in">Boshlash</a>
+        </div>
+    </nav>
+
+    <!-- SECTION 1: HERO -->
+    <section class="hero">
+        <div class="hero-bg"></div>
+        <div class="hero-grid">
+            <div class="hero-content animate-fade-in-up">
+                <div class="badge badge-info mb-4" style="margin-bottom: var(--sp-4);">Uzbekistanda №1 platforma</div>
+                <h1 class="text-gradient">Avtomobil moyini almashtirish — endi nazorat ostida</h1>
+                <p>Moy almashtirish vaqtini unutishdan charchadingizmi? Bizning aqlli tizimimiz sizga probegingizga qarab o'z vaqtida eslatadi va eng yaxshi STO markazlarini taklif qiladi.</p>
+                <div class="flex gap-6 mt-8">
+                    <a href="https://t.me/Moysizbot" class="btn btn-primary" style="padding: var(--sp-4) var(--sp-10); font-size: 1.1rem;">
+                        <i data-lucide="send"></i>
+                        <span>Botga o'tish</span>
+                    </a>
+                    <a href="#how-it-works" class="btn btn-secondary" style="padding: var(--sp-4) var(--sp-10); font-size: 1.1rem;">
+                        <span>Batafsil</span>
+                    </a>
+                </div>
+            </div>
+            <div class="hero-visual animate-slide-in-right">
+                <div class="mockup-container">
+                    <div class="mockup-screen">
+                        <div class="flex justify-between items-center mb-6">
+                            <i data-lucide="menu" size="20"></i>
+                            <span class="font-bold text-micro">MOYSIZ BOT</span>
+                            <i data-lucide="info" size="20"></i>
+                        </div>
+                        <div class="card-solid" style="background: rgba(59, 130, 246, 0.1); border-color: var(--accent-primary); margin-bottom: var(--sp-4);">
+                            <div class="text-small font-bold mb-1">90 Q123AA</div>
+                            <div class="text-micro">Moy holati: <span class="text-success">78%</span></div>
+                            <div class="progress-container mt-2" style="height: 4px;"><div class="progress-bar" style="width: 78%;"></div></div>
+                        </div>
+                        <div class="card-solid" style="padding: var(--sp-3); font-size: 10px; margin-bottom: var(--sp-4);">
+                            Eslatma: Keyingi almashtirishga 2 200 km qoldi.
+                        </div>
+                        <div class="grid" style="grid-template-columns: 1fr 1fr; gap: 8px;">
+                            <div class="card-solid" style="padding: 8px; text-align: center; font-size: 10px;">📋 Tarix</div>
+                            <div class="card-solid" style="padding: 8px; text-align: center; font-size: 10px;">🔧 STOlar</div>
+                            <div class="card-solid" style="padding: 8px; text-align: center; font-size: 10px;">📸 OCR</div>
+                            <div class="card-solid" style="padding: 8px; text-align: center; font-size: 10px;">⚙️ Sozlamalar</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 2: STATS -->
+    <section class="stats-section">
+        <div class="stats-grid">
+            <div class="stat-item">
+                <div class="stat-value counter" data-target="15000">0</div>
+                <div class="stat-label">Haydovchilar</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value counter" data-target="850">0</div>
+                <div class="stat-label">STO Markazlari</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value counter" data-target="42000">0</div>
+                <div class="stat-label">Almashtirishlar</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value counter" data-target="14">0</div>
+                <div class="stat-label">Hududlar</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 3: HOW IT WORKS -->
+    <section id="how-it-works" class="how-it-works">
+        <div class="text-center" style="text-align: center; max-width: 800px; margin: 0 auto;">
+            <h2 class="h1 mb-4">Moy almashtirish hech qachon esdan chiqmaydi</h2>
+            <p>Platformadan foydalanish juda oddiy va qulay. Atigi 4 qadamda avtomobilingizni nazoratga oling.</p>
+        </div>
+        
+        <div class="steps-container">
+            <div class="step-card animate-fade-in-up">
+                <div class="step-icon"><i data-lucide="user-plus"></i></div>
+                <h3>Ro'yxatdan o'tish</h3>
+                <p class="text-small">Telegram botga kiring va tilni tanlang. Hech qanday murakkab formalar yo'q.</p>
+            </div>
+            <div class="step-card animate-fade-in-up" style="animation-delay: 0.1s;">
+                <div class="step-icon"><i data-lucide="car"></i></div>
+                <h3>Avto qo'shish</h3>
+                <p class="text-small">Mashinangiz raqami va hozirgi probegini kiriting. Bizning OCR tizimimiz probegni rasmdan ham taniydi.</p>
+            </div>
+            <div class="step-card animate-fade-in-up" style="animation-delay: 0.2s;">
+                <div class="step-icon"><i data-lucide="bell"></i></div>
+                <h3>Eslatmalar</h3>
+                <p class="text-small">Moy almashtirishga 1000 km va 500 km qolganda biz sizni bot orqali ogohlantiramiz.</p>
+            </div>
+            <div class="step-card animate-fade-in-up" style="animation-delay: 0.3s;">
+                <div class="step-icon"><i data-lucide="history"></i></div>
+                <h3>Raqamli jurnal</h3>
+                <p class="text-small">Barcha servis ishlari tarixingiz saqlanadi. Mashinani sotayotganda bu katta ustunlik beradi.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 4: MAP -->
+    <section class="map-section">
+        <div class="map-mesh-bg"></div>
+        <h2 class="h1">Butun O'zbekiston bo'ylab</h2>
+        <p>14 ta hudud va barcha tumanlarda bizning hamkorlarimiz xizmatingizga tayyor</p>
+        
+        <div class="map-container animate-fade-in-up">
+            <img src="{{ url_for('static', filename='img/uz-map.png') }}" alt="Uzbekistan Coverage Map" class="uz-map-img">
+            
+            <!-- Hotspots -->
+            <div class="map-hotspot hotspot-tashkent-city">
+                <div class="map-detail-card">
+                    <h4>Toshkent shahri</h4>
+                    <p>Poytaxt markazi</p>
+                    <div class="stat"><span>Hamkorlar:</span><span>142 ta</span></div>
+                </div>
+            </div>
+            <div class="map-hotspot hotspot-tashkent-vil">
+                <div class="map-detail-card">
+                    <h4>Toshkent viloyati</h4>
+                    <p>Sanoat hududi</p>
+                    <div class="stat"><span>Hamkorlar:</span><span>85 ta</span></div>
+                </div>
+            </div>
+            <div class="map-hotspot hotspot-sirdaryo">
+                <div class="map-detail-card">
+                    <h4>Sirdaryo</h4>
+                    <p>Markaziy dehqonchilik</p>
+                    <div class="stat"><span>Hamkorlar:</span><span>28 ta</span></div>
+                </div>
+            </div>
+            <div class="map-hotspot hotspot-jizzax">
+                <div class="map-detail-card">
+                    <h4>Jizzax</h4>
+                    <p>Logistika markazi</p>
+                    <div class="stat"><span>Hamkorlar:</span><span>32 ta</span></div>
+                </div>
+            </div>
+            <div class="map-hotspot hotspot-samarkand">
+                <div class="map-detail-card">
+                    <h4>Samarqand</h4>
+                    <p>Turizm va hunarmandchilik</p>
+                    <div class="stat"><span>Hamkorlar:</span><span>94 ta</span></div>
+                </div>
+            </div>
+            <div class="map-hotspot hotspot-fergana">
+                <div class="map-detail-card">
+                    <h4>Farg'ona</h4>
+                    <p>Vodiy gavhari</p>
+                    <div class="stat"><span>Hamkorlar:</span><span>78 ta</span></div>
+                </div>
+            </div>
+            <div class="map-hotspot hotspot-namangan">
+                <div class="map-detail-card">
+                    <h4>Namangan</h4>
+                    <p>Gullar shahri</p>
+                    <div class="stat"><span>Hamkorlar:</span><span>65 ta</span></div>
+                </div>
+            </div>
+            <div class="map-hotspot hotspot-andijan">
+                <div class="map-detail-card">
+                    <h4>Andijon</h4>
+                    <p>Sanoat va savdo</p>
+                    <div class="stat"><span>Hamkorlar:</span><span>72 ta</span></div>
+                </div>
+            </div>
+            <div class="map-hotspot hotspot-qashqadaryo">
+                <div class="map-detail-card">
+                    <h4>Qashqadaryo</h4>
+                    <p>Gaz va neft hududi</p>
+                    <div class="stat"><span>Hamkorlar:</span><span>45 ta</span></div>
+                </div>
+            </div>
+            <div class="map-hotspot hotspot-bukhara">
+                <div class="map-detail-card">
+                    <h4>Buxoro</h4>
+                    <p>Qadimiy madaniyat</p>
+                    <div class="stat"><span>Hamkorlar:</span><span>56 ta</span></div>
+                </div>
+            </div>
+            <div class="map-hotspot hotspot-navoi">
+                <div class="map-detail-card">
+                    <h4>Navoiy</h4>
+                    <p>Sanoat giganti</p>
+                    <div class="stat"><span>Hamkorlar:</span><span>42 ta</span></div>
+                </div>
+            </div>
+            <div class="map-hotspot hotspot-xorazm">
+                <div class="map-detail-card">
+                    <h4>Xorazm</h4>
+                    <p>Xiva va Urganch</p>
+                    <div class="stat"><span>Hamkorlar:</span><span>34 ta</span></div>
+                </div>
+            </div>
+            <div class="map-hotspot hotspot-nukus">
+                <div class="map-detail-card">
+                    <h4>Qoraqalpog'iston</h4>
+                    <p>Nukus markazi</p>
+                    <div class="stat"><span>Hamkorlar:</span><span>29 ta</span></div>
+                </div>
+            </div>
+
+            <div class="map-overlay-text">INTERAKTIV HUDUDLAR XARITASI</div>
+        </div>
+
+        <div class="flex justify-center gap-8 mt-12 flex-wrap" style="margin-top: var(--sp-12); position: relative; z-index: 2;">
+            <div class="flex items-center gap-2"><div class="status-dot online"></div><span>Toshkent</span></div>
+            <div class="flex items-center gap-2"><div class="status-dot online"></div><span>Samarqand</span></div>
+            <div class="flex items-center gap-2"><div class="status-dot online"></div><span>Farg'ona</span></div>
+            <div class="flex items-center gap-2"><div class="status-dot online"></div><span>Namangan</span></div>
+            <div class="flex items-center gap-2"><div class="status-dot online"></div><span>Andijon</span></div>
+            <div class="flex items-center gap-2"><div class="status-dot online"></div><span>Buxoro</span></div>
+            <div class="flex items-center gap-2"><div class="status-dot online"></div><span>Navoiy</span></div>
+            <div class="flex items-center gap-2"><span>...va boshqa barcha hududlar</span></div>
+        </div>
+    </section>
+
+    <!-- SECTION 5: FEATURES -->
+    <section id="features" class="how-it-works" style="background: var(--bg-primary);">
+        <h2 class="h1 text-center mb-12" style="text-align: center; margin-bottom: var(--sp-12);">Nima uchun bizni tanlashadi?</h2>
+        <div class="features-grid">
+            <div class="card">
+                <i data-lucide="scan" class="text-accent mb-4"></i>
+                <h3 class="mb-3">OCR Skanner</h3>
+                <p class="text-small">Odometr rasmga olinadi va tizim avtomatik ravishda probegni aniqlaydi. Qo'lda yozish shart emas.</p>
+            </div>
+            <div class="card">
+                <i data-lucide="zap" class="text-accent mb-4"></i>
+                <h3 class="mb-3">Aqlli filtrlar</h3>
+                <p class="text-small">Mashinangiz modeliga mos moy markalarini va eng yaqin STOlarni oson topasiz.</p>
+            </div>
+            <div class="card">
+                <i data-lucide="star" class="text-accent mb-4"></i>
+                <h3 class="mb-3">Shaffof reyting</h3>
+                <p class="text-small">STOlardagi xizmat sifatiga haydovchilar baho beradi. Faqat sifatli xizmatlarni tanlang.</p>
+            </div>
+            <div class="card">
+                <i data-lucide="shield-check" class="text-accent mb-4"></i>
+                <h3 class="mb-3">Ma'lumotlar xavfsizligi</h3>
+                <p class="text-small">Sizning avto ma'lumotlaringiz va telefon raqamingiz SSL shifrlash orqali himoyalangan.</p>
+            </div>
+            <div class="card">
+                <i data-lucide="languages" class="text-accent mb-4"></i>
+                <h3 class="mb-3">Ko'p tilli interfeys</h3>
+                <p class="text-small">O'zbekcha (Lotin), Ўзбекча (Кирилл) va Rus tillarida xizmatdan foydalaning.</p>
+            </div>
+            <div class="card">
+                <i data-lucide="gift" class="text-accent mb-4"></i>
+                <h3 class="mb-3">Bonus va aksiyalar</h3>
+                <p class="text-small">Hamkorlarimizdan maxsus chegirmalar va moy almashtirish sovg'alarini qo'lga kiriting.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 6: FOR STO -->
+    <section id="for-sto" class="testimonials">
+        <div class="grid" style="grid-template-columns: 1fr 1fr; gap: var(--sp-16); max-width: var(--content-max-width); margin: 0 auto; align-items: center;">
+            <div class="animate-fade-in-up">
+                <h2 class="h1 mb-6">Servis markazingizni raqamlashtiring</h2>
+                <p class="mb-8" style="margin-bottom: var(--sp-8);">Sizda STO bormi? MOYSIZ hamkorligiga qo'shiling va mijozlar oqimini oshiring. Tizim orqali mijozlarga avtomatik eslatmalar yuborib, ularni qayta jalb qiling.</p>
+                <ul class="flex flex-col gap-4 mb-10" style="margin-bottom: var(--sp-10);">
+                    <li class="flex items-center gap-3"><i data-lucide="check-circle" class="text-success"></i><span>Tayyor mijozlar bazasi</span></li>
+                    <li class="flex items-center gap-3"><i data-lucide="check-circle" class="text-success"></i><span>Raqamli xizmatlar jurnali</span></li>
+                    <li class="flex items-center gap-3"><i data-lucide="check-circle" class="text-success"></i><span>Reyting va brend tanilishi</span></li>
+                    <li class="flex items-center gap-3"><i data-lucide="check-circle" class="text-success"></i><span>Tahliliy ma'lumotlar paneli</span></li>
+                </ul>
+                <div class="flex gap-4 mt-10">
+                    <a href="https://t.me/Moysizbot" class="btn btn-secondary" style="padding: var(--sp-4) var(--sp-8);">
+                        <i data-lucide="send"></i>
+                        <span>Botga o'tish</span>
+                    </a>
+                    <a href="https://t.me/moysiz_admin" class="btn btn-primary" style="padding: var(--sp-4) var(--sp-8);">
+                        <span>Servisni ulash uchun ariza</span>
+                    </a>
+                </div>
+            </div>
+            <div class="card animate-slide-in-right" style="padding: 0; overflow: hidden;">
+                <img src="{{ url_for('static', filename='img/service-center.png') }}" alt="Service center" style="width: 100%; height: 400px; object-fit: cover;">
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 7: TESTIMONIALS -->
+    <section class="testimonials" style="background: var(--bg-primary);">
+        <h2 class="h1 text-center mb-12" style="text-align: center; margin-bottom: var(--sp-12);">Foydalanuvchilar fikri</h2>
+        <div class="grid" style="grid-template-columns: repeat(3, 1fr); gap: var(--sp-8); max-width: var(--content-max-width); margin: 0 auto;">
+            <div class="card testimonial-card">
+                <div class="testimonial-quote">"Moy almashtirish vaqti kelsa doim bloknot qidirardim. Endi botning o'zi eslatadi, juda qulay!"</div>
+                <div class="flex items-center gap-3">
+                    <div class="avatar">SJ</div>
+                    <div>
+                        <div class="font-bold">Sardor J.</div>
+                        <div class="text-micro text-disabled">Haydovchi, Toshkent</div>
+                    </div>
+                </div>
+            </div>
+            <div class="card testimonial-card">
+                <div class="testimonial-quote">"Servisimiz uchun juda yaxshi reklama bo'ldi. Mijozlarimiz bot orqali bizni oson topishyapti."</div>
+                <div class="flex items-center gap-3">
+                    <div class="avatar" style="background: var(--color-success);">MB</div>
+                    <div>
+                        <div class="font-bold">Murod B.</div>
+                        <div class="text-micro text-disabled">STO markazi egasi, Buxoro</div>
+                    </div>
+                </div>
+            </div>
+            <div class="card testimonial-card">
+              <div class="testimonial-quote">"OCR skaner funksiyasi daxshat! Probegni yozib o'tirmayman, shunchaki rasmga olaman xolos."</div>
+              <div class="flex items-center gap-3">
+                  <div class="avatar">AA</div>
+                  <div>
+                      <div class="font-bold">Anvar A.</div>
+                      <div class="text-micro text-disabled">Haydovchi, Namangan</div>
+                  </div>
+              </div>
+          </div>
+        </div>
+    </section>
+
+    <!-- SECTION 8: FAQ -->
+    <section class="faq-section">
+        <h2 class="h1 text-center mb-12" style="text-align: center;">Ko'p beriladigan savollar</h2>
+        <div class="faq-container">
+            <div class="faq-item">
+                <button class="faq-trigger">
+                    <span>Xizmatdan foydalanish pullikmi?</span>
+                    <i data-lucide="chevron-down"></i>
+                </button>
+                <div class="faq-content">
+                    <p class="text-small">Yo'q, haydovchilar uchun barcha xizmatlar (eslatmalar, tarix, qidiruv) mutlaqo bepul.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-trigger">
+                    <span>Eslatma kelmasa nima qilish kerak?</span>
+                    <i data-lucide="chevron-down"></i>
+                </button>
+                <div class="faq-content">
+                    <p class="text-small">Eslatmalar kelishi uchun Telegram'da botni "Mute" qilmaganingizga ishonch hosil qiling va har safar moy almashtirganda botga yangi probegni kiriting.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-trigger">
+                    <span>STO bo'lib qanday ro'yxatdan o'taman?</span>
+                    <i data-lucide="chevron-down"></i>
+                </button>
+                <div class="faq-content">
+                    <p class="text-small">Buning uchun bizning adminimiz bilan (@moysiz_admin) bog'laning yoki saytdagi arizani to'ldiring. Biz ma'lumotlaringizni tekshirib, tizimga qo'shamiz.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 9: FINAL CTA -->
+    <section class="hero" style="min-height: 50vh; background: var(--accent-gradient);">
+        <div class="hero-content text-center" style="max-width: 800px; margin: 0 auto; color: white;">
+            <h2 class="h1 mb-6" style="color: white; font-size: 3rem;">G'ildirakni o'zingiz aylantiring.</h2>
+            <p class="mb-10" style="color: rgba(255,255,255,0.8); font-size: 1.25rem;">Bugunning o'zida minglab baxtli haydovchilarga qo'shiling va avtomobilingizni uzoq xizmat qilishiga erishing.</p>
+            <div class="flex justify-center gap-6">
+                <a href="https://t.me/Moysizbot" class="btn btn-secondary" style="background: white; color: var(--accent-primary); padding: var(--sp-5) var(--sp-12); font-size: 1.2rem;">
+                    <i data-lucide="send"></i>
+                    <span>Botga o'tish</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 10: FOOTER -->
+    <footer class="landing-footer">
+        <div class="footer-grid">
+            <div>
+                <div class="logo-container mb-6" style="margin-bottom: var(--sp-6);">
+                    <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M16 4L6 14V26C6 27.1046 6.89543 28 8 28H24C25.1046 28 26 27.1046 26 26V14L16 4Z" fill="url(#logo-grad-f)"/><defs><linearGradient id="logo-grad-f" x1="6" y1="4" x2="26" y2="28" gradientUnits="userSpaceOnUse"><stop stop-color="#3B82F6"/><stop offset="1" stop-color="#6366F1"/></linearGradient></defs></svg>
+                    <span style="font-size: 1.25rem;">MOYSIZ</span>
+                </div>
+                <p class="text-small">O'zbekistondagi avtomobil servislarini va haydovchilarni birlashtiruvchi innovatsion platforma.</p>
+            </div>
+            <div>
+                <h4 class="mb-4" style="color: var(--text-primary);">Tizim</h4>
+                <div class="flex flex-col gap-2">
+                    <a href="#about" class="text-small text-muted">Biz haqimizda</a>
+                    <a href="#how-it-works" class="text-small text-muted">Qanday ishlaydi?</a>
+                    <a href="#features" class="text-small text-muted">Imkoniyatlar</a>
+                </div>
+            </div>
+            <div>
+                <h4 class="mb-4" style="color: var(--text-primary);">Hamkorlar uchun</h4>
+                <div class="flex flex-col gap-2">
+                    <a href="#for-sto" class="text-small text-muted">STO qo'shish</a>
+                    <a href="{{ url_for('login') }}" class="text-small text-muted">Admin panel</a>
+                    <a href="#" class="text-small text-muted">Reklama</a>
+                </div>
+            </div>
+            <div>
+                <h4 class="mb-4" style="color: var(--text-primary);">Kontaktlar</h4>
+                <div class="flex flex-col gap-2">
+                    <span class="text-small text-muted">Support: @moysiz_support</span>
+                    <span class="text-small text-muted">Admin: @moysiz_admin</span>
+                    <div class="flex gap-4 mt-4" style="margin-top: var(--sp-4);">
+                        <i data-lucide="instagram" size="18" class="text-muted"></i>
+                        <i data-lucide="facebook" size="18" class="text-muted"></i>
+                        <i data-lucide="twitter" size="18" class="text-muted"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="text-center mt-20 pt-10" style="text-align: center; margin-top: var(--sp-12); padding-top: var(--sp-6); border-top: 1px solid var(--border-default);">
+            <p class="text-micro text-disabled">&copy; 2026 MOYSIZ Enterprise Edition. Barcha huquqlar himoyalangan.</p>
+        </div>
+    </footer>
+
+    <script>
+        lucide.createIcons();
+        
+        // Sticky Header Effect
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('landing-nav');
+            if (window.scrollY > 100) {
+                nav.classList.add('scrolled');
+            } else {
+                nav.classList.remove('scrolled');
+            }
+        });
+        
+        // Counter Animation
+        const counters = document.querySelectorAll('.counter');
+        const countUp = (el) => {
+            const target = +el.getAttribute('data-target');
+            const count = +el.innerText;
+            const inc = target / 100;
+            if (count < target) {
+                el.innerText = Math.ceil(count + inc);
+                setTimeout(() => countUp(el), 20);
+            } else {
+                el.innerText = target.toLocaleString();
+            }
+        };
+        
+        // Observer for counters
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    countUp(entry.target);
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.5 });
+        
+        counters.forEach(c => observer.observe(c));
+
+        // FAQ Toggle
+        document.querySelectorAll('.faq-trigger').forEach(trigger => {
+            trigger.addEventListener('click', () => {
+                const item = trigger.parentElement;
+                item.classList.toggle('active');
+                
+                // Toggle rotation of icon
+                const icon = trigger.querySelector('i');
+                if (item.classList.contains('active')) {
+                    icon.style.transform = 'rotate(180deg)';
+                } else {
+                    icon.style.transform = 'rotate(0deg)';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MOYSIZ | {% block title %}{% endblock %}</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/design-system.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/animations.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/components.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/layout.css') }}">
+    {% block extra_css %}{% endblock %}
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="animate-fade-in">
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="logo-container">
+                    <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M16 4L6 14V26C6 27.1046 6.89543 28 8 28H24C25.1046 28 26 27.1046 26 26V14L16 4Z" fill="url(#logo-gradient)"/>
+                        <path d="M16 10L10 16" stroke="white" stroke-width="2" stroke-linecap="round"/>
+                        <circle cx="16" cy="20" r="4" stroke="white" stroke-width="2"/>
+                        <defs>
+                            <linearGradient id="logo-gradient" x1="6" y1="4" x2="26" y2="28" gradientUnits="userSpaceOnUse">
+                                <stop stop-color="#3B82F6"/>
+                                <stop offset="1" stop-color="#6366F1"/>
+                            </linearGradient>
+                        </defs>
+                    </svg>
+                    <span>MOYSIZ</span>
+                </div>
+            </div>
+            
+            <div class="sidebar-content">
+                <nav class="nav-section">
+                    <p class="nav-label">Asosiy</p>
+                    <a href="{{ url_for('dashboard') }}" class="nav-link {% if request.endpoint == 'dashboard' %}active{% endif %}">
+                        <i data-lucide="layout-grid"></i>
+                        <span>Dashboard</span>
+                    </a>
+                    <a href="{{ url_for('search') }}" class="nav-link {% if request.endpoint == 'search' %}active{% endif %}">
+                        <i data-lucide="search"></i>
+                        <span>Avto qidiruv</span>
+                    </a>
+                </nav>
+                
+                <nav class="nav-section">
+                    <p class="nav-label">Boshqaruv</p>
+                    <a href="{{ url_for('users') }}" class="nav-link {% if request.endpoint == 'users' %}active{% endif %}">
+                        <i data-lucide="users"></i>
+                        <span>Foydalanuvchilar</span>
+                    </a>
+                    <a href="{{ url_for('services_list') }}" class="nav-link {% if request.endpoint == 'services_list' %}active{% endif %}">
+                        <i data-lucide="wrench"></i>
+                        <span>STO markazlari</span>
+                    </a>
+                    <a href="{{ url_for('logs_history') }}" class="nav-link {% if request.endpoint == 'logs_history' %}active{% endif %}">
+                        <i data-lucide="clipboard-list"></i>
+                        <span>Xizmatlar jurnali</span>
+                    </a>
+                    <a href="{{ url_for('broadcasts') }}" class="nav-link {% if request.endpoint == 'broadcasts' %}active{% endif %}">
+                        <i data-lucide="megaphone"></i>
+                        <span>Xabarlar</span>
+                    </a>
+                </nav>
+                
+                <nav class="nav-section">
+                    <p class="nav-label">Eksport</p>
+                    <a href="{{ url_for('export_users') }}" class="nav-link">
+                        <i data-lucide="download"></i>
+                        <span>Excel (Users)</span>
+                    </a>
+                    <a href="{{ url_for('export_logs') }}" class="nav-link">
+                        <i data-lucide="download"></i>
+                        <span>Excel (Logs)</span>
+                    </a>
+                </nav>
+            </div>
+            
+            <div class="sidebar-footer">
+                <div class="server-status">
+                    <span class="status-dot online animate-status-pulse"></span>
+                    <span>Server: ONLINE</span>
+                </div>
+                <div class="text-micro text-disabled" style="margin-bottom: var(--sp-4);">Versiya: v2.0 Enterprise</div>
+                <a href="{{ url_for('logout') }}" class="nav-link" style="padding-left: 0; color: var(--color-danger);">
+                    <i data-lucide="log-out"></i>
+                    <span>Chiqish</span>
+                </a>
+            </div>
+        </aside>
+        
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="header">
+                <div class="header-left">
+                    <button id="sidebar-toggle" class="btn btn-ghost" style="padding: var(--sp-2);">
+                        <i data-lucide="menu"></i>
+                    </button>
+                    <span class="header-title">{% block header_title %}{% endblock %}</span>
+                </div>
+                
+                <div class="header-actions">
+                    <div id="live-clock" class="text-small text-mono text-muted hidden-mobile"></div>
+                    
+                    <div class="user-profile">
+                        <div class="avatar">A</div>
+                        <div class="hidden-mobile">
+                            <div class="text-small font-semibold">Administrator</div>
+                            <div class="text-micro text-disabled">Asosiy admin</div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+            
+            <div class="page-container animate-fade-in-up">
+                {% block content %}{% endblock %}
+            </div>
+        </main>
+    </div>
+    
+    <!-- Mobile Sidebar Overlay -->
+    <div class="sidebar-overlay" id="sidebar-overlay"></div>
+    
+    <!-- Toast Container -->
+    <div class="toast-container" id="toast-container"></div>
+    
+    <!-- Scripts -->
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+        
+        // Sidebar Toggle
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('sidebar-overlay');
+        const toggle = document.getElementById('sidebar-toggle');
+        
+        if (toggle) {
+            toggle.addEventListener('click', () => {
+                sidebar.classList.toggle('open');
+                overlay.classList.toggle('open');
+            });
+        }
+        
+        overlay.addEventListener('click', () => {
+            sidebar.classList.remove('open');
+            overlay.classList.remove('open');
+        });
+        
+        // Live Clock
+        function updateClock() {
+            const now = new Date();
+            const timeStr = now.toLocaleTimeString('uz-UZ', { 
+                hour: '2-digit', 
+                minute: '2-digit', 
+                second: '2-digit' 
+            });
+            const dateStr = now.toLocaleDateString('uz-UZ', {
+                day: '2-digit',
+                month: 'short',
+                year: 'numeric'
+            });
+            const clockEl = document.getElementById('live-clock');
+            if (clockEl) {
+                clockEl.textContent = `${dateStr} | ${timeStr}`;
+            }
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+    </script>
+    
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+    {% block scripts %}{% endblock %}
+</body>
+</html>

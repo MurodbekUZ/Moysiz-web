@@ -1,0 +1,193 @@
+{% extends "base.html" %}
+
+{% block title %}STO markazlari boshqaruvi{% endblock %}
+{% block header_title %}STO markazlari{% endblock %}
+
+{% block extra_css %}
+<style>
+    .services-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+        gap: var(--sp-6);
+    }
+    
+    .service-card {
+        display: flex;
+        flex-direction: column;
+        gap: var(--sp-4);
+    }
+    
+    .service-card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+    }
+    
+    .rating-stars {
+        display: flex;
+        align-items: center;
+        gap: 2px;
+    }
+    
+    .star-filled { color: var(--color-warning); fill: var(--color-warning); }
+    .star-empty { color: var(--text-disabled); }
+    
+    .service-stats {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: var(--sp-4);
+        padding: var(--sp-4) 0;
+        border-top: 1px solid var(--border-default);
+        margin-top: auto;
+    }
+    
+    .view-toggle {
+        display: flex;
+        background: var(--bg-input);
+        padding: 4px;
+        border-radius: var(--border-radius-md);
+        border: 1px solid var(--border-default);
+    }
+    
+    .view-btn {
+        padding: var(--sp-2) var(--sp-4);
+        border-radius: var(--border-radius-sm);
+        color: var(--text-disabled);
+        transition: var(--transition-all);
+    }
+    
+    .view-btn.active {
+        background: var(--bg-card-solid);
+        color: var(--accent-primary);
+        box-shadow: var(--shadow-sm);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div>
+        <h2 class="mb-1" style="margin-bottom: var(--sp-1);">Xizmat ko'rsatish markazlari</h2>
+        <p class="text-small">Tizimda jami {{ stats.total_services }} ta hamkor STO mavjud</p>
+    </div>
+    <div class="flex gap-4 items-center">
+        <div class="view-toggle">
+            <button class="view-btn active" title="Grid ko'rinishi"><i data-lucide="layout-grid"></i></button>
+            <button class="view-btn" title="Ro'yxat ko'rinishi"><i data-lucide="list"></i></button>
+        </div>
+        <button class="btn btn-primary">
+            <i data-lucide="plus"></i>
+            <span>Yangi STO qo'shish</span>
+        </button>
+    </div>
+</div>
+
+<!-- Filters -->
+<div class="card mb-6" style="margin-bottom: var(--sp-6);">
+    <div class="filter-bar">
+        <select class="input" style="flex: 1;">
+            <option value="">Barcha hududlar</option>
+            {% for reg, count in regions %}
+            <option value="{{ reg }}">{{ reg }} ({{ count }})</option>
+            {% endfor %}
+        </select>
+        
+        <select class="input" style="width: auto;">
+            <option value="rating_desc">Reyting bo'yicha (baland)</option>
+            <option value="count_desc">Xizmatlar soni bo'yicha</option>
+            <option value="newest">Yangi qo'shilganlar</option>
+        </select>
+        
+        <div class="input-wrapper" style="flex: 1;">
+            <i data-lucide="search" style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); width: 18px; color: var(--text-disabled);"></i>
+            <input type="text" class="input" style="padding-left: 40px;" placeholder="STO nomi yoki telefon bo'yicha qidirish...">
+        </div>
+    </div>
+</div>
+
+<!-- Services Grid -->
+<div class="services-grid">
+    {% for service in top_services %}
+    <div class="card service-card">
+        <div class="service-card-header">
+            <div>
+                <h3 class="mb-1" style="margin-bottom: var(--sp-1);">{{ service.name }}</h3>
+                <div class="flex items-center gap-1 text-micro text-disabled">
+                    <i data-lucide="map-pin" size="12"></i>
+                    <span>{{ service.region }}</span>
+                </div>
+            </div>
+            <span class="badge badge-active">Aktiv</span>
+        </div>
+        
+        <div class="rating-stars">
+            <i data-lucide="star" class="star-filled" size="16"></i>
+            <i data-lucide="star" class="star-filled" size="16"></i>
+            <i data-lucide="star" class="star-filled" size="16"></i>
+            <i data-lucide="star" class="star-filled" size="16"></i>
+            <i data-lucide="star" class="{% if service.rating >= 4.5 %}star-filled{% else %}star-empty{% endif %}" size="16"></i>
+            <span class="ml-2 text-small font-semibold">{{ service.rating }}</span>
+            <span class="text-micro text-disabled ml-1">(245 ta fikr)</span>
+        </div>
+        
+        <div class="flex flex-col gap-2 my-2" style="margin: var(--sp-2) 0;">
+            <a href="tel:+998{{ service.phone }}" class="flex items-center gap-2 text-small text-muted">
+                <i data-lucide="phone" size="14"></i>
+                <span>+998 {{ service.phone }}</span>
+            </a>
+            <div class="flex items-center gap-2 text-small text-muted">
+                <i data-lucide="clock" size="14"></i>
+                <span>Oxirgi faollik: 3 kun oldin</span>
+            </div>
+        </div>
+        
+        <div class="service-stats">
+            <div>
+                <div class="text-micro text-disabled uppercase">Xizmatlar</div>
+                <div class="font-bold">{{ service.count }} ta</div>
+            </div>
+            <div>
+                <div class="text-micro text-disabled uppercase">O'rtacha chek</div>
+                <div class="font-bold">450 000 so'm</div>
+            </div>
+        </div>
+        
+        <div class="flex gap-2">
+            <button class="btn btn-secondary w-full btn-small">Tafsilotlar</button>
+            <button class="btn btn-ghost w-full btn-small"><i data-lucide="map" size="16"></i></button>
+        </div>
+    </div>
+    {% endfor %}
+    
+    <!-- More mock cards to fill space if top_services is small -->
+    <div class="card service-card">
+        <div class="service-card-header">
+            <div>
+                <h3 class="mb-1" style="margin-bottom: var(--sp-1);">Mega Oil Service</h3>
+                <div class="flex items-center gap-1 text-micro text-disabled">
+                    <i data-lucide="map-pin" size="12"></i>
+                    <span>Farg'ona</span>
+                </div>
+            </div>
+            <span class="badge badge-active">Aktiv</span>
+        </div>
+        <div class="rating-stars">
+            <i data-lucide="star" class="star-filled" size="16"></i>
+            <i data-lucide="star" class="star-filled" size="16"></i>
+            <i data-lucide="star" class="star-filled" size="16"></i>
+            <i data-lucide="star" class="star-filled" size="16"></i>
+            <i data-lucide="star" class="star-empty" size="16"></i>
+            <span class="ml-2 text-small font-semibold">4.2</span>
+            <span class="text-micro text-disabled ml-1">(112 ta fikr)</span>
+        </div>
+        <div class="service-stats">
+            <div><div class="text-micro text-disabled uppercase">Xizmatlar</div><div class="font-bold">156 ta</div></div>
+            <div><div class="text-micro text-disabled uppercase">O'rtacha chek</div><div class="font-bold">380 000 so'm</div></div>
+        </div>
+        <div class="flex gap-2">
+            <button class="btn btn-secondary w-full btn-small">Tafsilotlar</button>
+            <button class="btn btn-ghost w-full btn-small"><i data-lucide="map" size="16"></i></button>
+        </div>
+    </div>
+</div>
+{% endblock %}

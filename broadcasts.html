@@ -1,0 +1,188 @@
+{% extends "base.html" %}
+
+{% block title %}Xabarnomalar jurnali{% endblock %}
+{% block header_title %}Xabarlar va Broadcast{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div>
+        <h2 class="mb-1" style="margin-bottom: var(--sp-1);">Yuborilgan xabarnomalar</h2>
+        <p class="text-small">Tizim orqali yuborilgan barcha ommaviy xabarlar tarixi va statistikasi</p>
+    </div>
+    <div class="badge badge-info" style="padding: 6px 12px;">
+        <i data-lucide="info" size="14" style="margin-right: 6px;"></i>
+        <span>Xabar yaratish faqat Telegram bot orqali amalga oshiriladi</span>
+    </div>
+</div>
+
+<!-- Filters -->
+<div class="card mb-6" style="margin-bottom: var(--sp-6);">
+    <div class="filter-bar">
+        <div style="flex: 1;">
+            <select class="input">
+                <option value="">Barcha holatlar</option>
+                <option value="sent">Yuborilgan</option>
+                <option value="pending">Kutilmoqda</option>
+                <option value="failed">Xatolik</option>
+            </select>
+        </div>
+        
+        <div style="flex: 1;">
+            <select class="input">
+                <option value="">Barcha rollar</option>
+                <option value="client">Faqat haydovchilar</option>
+                <option value="service">Faqat STOlar</option>
+            </select>
+        </div>
+        
+        <div class="input-wrapper" style="flex: 2;">
+            <i data-lucide="search" style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); width: 18px; color: var(--text-disabled);"></i>
+            <input type="text" class="input" style="padding-left: 40px;" placeholder="Xabar matni bo'yicha qidirish...">
+        </div>
+    </div>
+</div>
+
+<!-- Broadcasts Table -->
+<div class="table-container">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Sana</th>
+                <th>Xabar matni</th>
+                <th>Target (Hudud/Rol)</th>
+                <th>Statistika</th>
+                <th>Holat</th>
+                <th>Amallar</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Mock Data -->
+            <tr>
+                <td class="text-small">
+                    <div class="font-semibold">05.04.2026</div>
+                    <div class="text-micro text-disabled">11:00</div>
+                </td>
+                <td style="max-width: 300px;">
+                    <div class="truncate font-medium">Yangi hamkorligimiz: Castrol moylari endi barcha STOlarda maxsus narxda!</div>
+                    <div class="text-micro text-muted">Aksiya doirasida 15% chegirma...</div>
+                </td>
+                <td>
+                    <div class="flex flex-wrap gap-1">
+                        <span class="badge badge-info" style="font-size: 10px;">Barcha hududlar</span>
+                        <span class="badge badge-client" style="font-size: 10px;">Haydovchi</span>
+                    </div>
+                </td>
+                <td>
+                    <div class="flex flex-col gap-1">
+                        <div class="text-small"><b>1,450</b> / 1,500 yuborildi</div>
+                        <div class="progress-container" style="height: 4px;">
+                            <div class="progress-bar" style="width: 96%; background: var(--color-success);"></div>
+                        </div>
+                    </div>
+                </td>
+                <td><span class="badge badge-active">Yuborilgan</span></td>
+                <td>
+                    <button class="btn btn-ghost" style="padding: 4px;"><i data-lucide="bar-chart-2" size="18"></i></button>
+                    <button class="btn btn-ghost" style="padding: 4px;"><i data-lucide="more-vertical" size="18"></i></button>
+                </td>
+            </tr>
+            <tr>
+                <td class="text-small">
+                    <div class="font-semibold">02.04.2026</div>
+                    <div class="text-micro text-disabled">09:30</div>
+                </td>
+                <td style="max-width: 300px;">
+                    <div class="truncate font-medium">Toshkent viloyati STOlari uchun yangi instruksiya.</div>
+                    <div class="text-micro text-muted">Iltimos, yangi OCR tizimini tekshiring...</div>
+                </td>
+                <td>
+                    <div class="flex flex-wrap gap-1">
+                        <span class="badge badge-info" style="font-size: 10px;">Toshkent v.</span>
+                        <span class="badge badge-service" style="font-size: 10px;">Servis</span>
+                    </div>
+                </td>
+                <td>
+                    <div class="flex flex-col gap-1">
+                        <div class="text-small"><b>82</b> / 82 yuborildi</div>
+                        <div class="progress-container" style="height: 4px;">
+                            <div class="progress-bar" style="width: 100%; background: var(--color-success);"></div>
+                        </div>
+                    </div>
+                </td>
+                <td><span class="badge badge-active">Yuborilgan</span></td>
+                <td>
+                    <button class="btn btn-ghost" style="padding: 4px;"><i data-lucide="bar-chart-2" size="18"></i></button>
+                    <button class="btn btn-ghost" style="padding: 4px;"><i data-lucide="more-vertical" size="18"></i></button>
+                </td>
+            </tr>
+            <tr>
+                <td class="text-small">
+                    <div class="font-semibold">30.03.2026</div>
+                    <div class="text-micro text-disabled">15:45</div>
+                </td>
+                <td style="max-width: 300px;">
+                    <div class="truncate font-medium">Tabriklaymiz! Tizimda 10-moy almashtirish bajaring va sovg'a oling.</div>
+                </td>
+                <td>
+                    <div class="flex flex-wrap gap-1">
+                        <span class="badge badge-info" style="font-size: 10px;">Barcha hududlar</span>
+                        <span class="badge badge-client" style="font-size: 10px;">Haydovchi</span>
+                    </div>
+                </td>
+                <td>
+                    <div class="flex flex-col gap-1">
+                        <div class="text-small"><b>1,200</b> / 1,220 yuborildi</div>
+                        <div class="progress-container" style="height: 4px;">
+                            <div class="progress-bar" style="width: 98%; background: var(--color-success);"></div>
+                        </div>
+                    </div>
+                </td>
+                <td><span class="badge badge-active">Yuborilgan</span></td>
+                <td>
+                    <button class="btn btn-ghost" style="padding: 4px;"><i data-lucide="bar-chart-2" size="18"></i></button>
+                    <button class="btn btn-ghost" style="padding: 4px;"><i data-lucide="more-vertical" size="18"></i></button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<!-- Detailed Stats (Initially Hidden or for Modal) -->
+<div class="grid mt-8" style="grid-template-columns: 1fr 1fr; gap: var(--sp-6);">
+    <div class="card">
+        <h3 class="mb-4" style="margin-bottom: var(--sp-4);">So'nggi xabar statistikasi</h3>
+        <div class="flex justify-between items-center mb-6">
+            <div class="text-small text-muted">Xabar yuborilgan: 05.04.2026</div>
+            <div class="badge badge-active">Muvaffaqiyatli</div>
+        </div>
+        
+        <div class="grid" style="grid-template-columns: 1fr 1fr; gap: var(--sp-4);">
+            <div class="card-solid" style="padding: var(--sp-4);">
+                <div class="text-micro text-disabled uppercase">Muvaffaqiyatli</div>
+                <div class="h2 text-success" style="margin: 4px 0;">1,450</div>
+                <div class="text-micro">96.6% yetkazildi</div>
+            </div>
+            <div class="card-solid" style="padding: var(--sp-4);">
+                <div class="text-micro text-disabled uppercase">Xatoliklar</div>
+                <div class="h2 text-danger" style="margin: 4px 0;">50</div>
+                <div class="text-micro">3.4% xato (bot blocked)</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="card">
+        <h3 class="mb-4" style="margin-bottom: var(--sp-4);">Xabar predvyusi</h3>
+        <div class="card-solid" style="background: rgba(255, 255, 255, 0.03); border-style: dashed;">
+            <div class="text-small mb-3" style="margin-bottom: var(--sp-3);">
+                <b>Castrol maxsus aksiyasi!</b><br><br>
+                Assalomu alaykum, aziz haydovchi! MOYSIZ va Castrol kompaniyasi siz uchun maxsus sovg'a tayyorladi.<br><br>
+                Endi barcha hamkor STOlarda Castrol Edge moylarini 15% chegirma bilan almashtirishingiz mumkin. Shunchaki botdagi QR-kodni ko'rsatib, aksiyada ishtirok eting!
+            </div>
+            <div style="width: 100%; height: 120px; background: rgba(59, 130, 246, 0.1); border-radius: var(--border-radius-md); display: flex; align-items: center; justify-content: center; color: var(--text-disabled);">
+                <i data-lucide="image" size="32"></i>
+                <span class="ml-2">Media file (image/video)</span>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

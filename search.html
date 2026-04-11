@@ -1,0 +1,279 @@
+{% extends "base.html" %}
+
+{% block title %}Avto qidiruv{% endblock %}
+{% block header_title %}Avtomobil qidirish{% endblock %}
+
+{% block extra_css %}
+<style>
+    .search-container {
+        max-width: 800px;
+        margin: 0 auto var(--sp-8);
+    }
+    
+    .plate-input-container {
+        position: relative;
+        display: flex;
+        gap: var(--sp-4);
+    }
+    
+    .plate-input {
+        flex: 1;
+        font-family: var(--font-mono);
+        font-size: 1.5rem;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        padding: var(--sp-4) var(--sp-6);
+        background: var(--bg-card);
+        border: 2px solid var(--border-default);
+        border-radius: var(--border-radius-md);
+        transition: var(--transition-all);
+    }
+    
+    .plate-input:focus {
+        border-color: var(--accent-primary);
+        box-shadow: var(--shadow-glow);
+    }
+    
+    .status-ring-container {
+        position: relative;
+        width: 120px;
+        height: 120px;
+    }
+    
+    .status-ring-svg {
+        transform: rotate(-90deg);
+    }
+    
+    .status-ring-bg {
+        fill: none;
+        stroke: rgba(255, 255, 255, 0.05);
+        stroke-width: 8;
+    }
+    
+    .status-ring-fill {
+        fill: none;
+        stroke-width: 8;
+        stroke-linecap: round;
+        transition: stroke-dashoffset 1s ease;
+    }
+    
+    .status-text {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+    }
+    
+    .info-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: var(--sp-6);
+    }
+    
+    .info-item .label {
+        font-size: var(--fs-micro);
+        text-transform: uppercase;
+        color: var(--text-disabled);
+        margin-bottom: var(--sp-1);
+    }
+    
+    .info-item .value {
+        font-weight: var(--fw-semibold);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="search-container">
+    <div class="card">
+        <form action="{{ url_for('search') }}" method="POST" id="search-form">
+            <div class="plate-input-container">
+                <input type="text" name="plate" id="plate-input" class="plate-input" 
+                       placeholder="90 Q123AA" maxlength="9" value="{{ plate or '' }}" required>
+                <button type="submit" class="btn btn-primary" style="padding: 0 var(--sp-8);">
+                    <i data-lucide="search"></i>
+                    <span>Topish</span>
+                </button>
+            </div>
+            <div class="text-micro text-disabled mt-2" style="margin-top: var(--sp-2);">
+                Namuna: 01 A777BA, 90 Q123AA
+            </div>
+        </form>
+    </div>
+</div>
+
+{% if results %}
+<div class="animate-fade-in-up">
+    <!-- Main Result Card -->
+    <div class="card mb-8" style="margin-bottom: var(--sp-8);">
+        <div class="flex justify-between items-start flex-wrap gap-6">
+            <div class="flex-1">
+                <div class="flex items-center gap-4 mb-4" style="margin-bottom: var(--sp-4);">
+                    <h2 class="text-mono">{{ results.vehicle.plate_number }}</h2>
+                    <span class="badge badge-active">Aktiv</span>
+                </div>
+                
+                <div class="info-grid">
+                    <div class="info-item">
+                        <div class="label">Hozirgi probeg</div>
+                        <div class="value text-mono">{{ results.vehicle.current_mileage }} km</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="label">Moy markasi</div>
+                        <div class="value">{{ results.vehicle.oil_brand }}</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="label">Oxirgi almashtirish</div>
+                        <div class="value">{{ results.vehicle.last_change_date }} ({{ results.vehicle.last_change_mileage }} km)</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="label">Keyingi almashtirish</div>
+                        <div class="value text-accent">{{ results.vehicle.next_change_km }} km da</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="flex flex-col items-center gap-3">
+                <div class="status-ring-container">
+                    <svg class="status-ring-svg" width="120" height="120">
+                        <circle class="status-ring-bg" cx="60" cy="60" r="52"></circle>
+                        <circle class="status-ring-fill" id="oil-progress-ring" cx="60" cy="60" r="52" 
+                                style="stroke-dasharray: 326.7; stroke-dashoffset: 326.7; stroke: {{ results.status_color }};"></circle>
+                    </svg>
+                    <div class="status-text">
+                        <div class="text-h3 font-bold">{{ results.oil_percent }}%</div>
+                        <div class="text-micro">Moy holati</div>
+                    </div>
+                </div>
+                <div class="badge" style="background: {{ results.status_color }}20; color: {{ results.status_color }};">
+                    {{ results.status_text }}
+                </div>
+            </div>
+        </div>
+        
+        <hr style="border: none; border-top: 1px solid var(--border-default); margin: var(--sp-8) 0;">
+        
+        <div class="flex justify-between items-start flex-wrap gap-6">
+            <div>
+                <div class="label text-micro text-disabled uppercase mb-4" style="margin-bottom: var(--sp-2);">Ega haqida ma'lumot</div>
+                <div class="flex items-center gap-4">
+                    <div class="avatar" style="width: 48px; height: 48px; font-size: 20px;">
+                        {{ results.owner.name[0] }}
+                    </div>
+                    <div>
+                        <div class="h3">{{ results.owner.name }}</div>
+                        <div class="text-muted">{{ results.owner.phone }}</div>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div class="label text-micro text-disabled uppercase mb-4" style="margin-bottom: var(--sp-2);">Hudud</div>
+                <div class="flex items-center gap-2">
+                    <i data-lucide="map-pin" class="text-accent" size="18"></i>
+                    <span>{{ results.owner.region }}, {{ results.owner.district }}</span>
+                </div>
+                <div class="text-micro text-disabled" style="margin-top: var(--sp-2);">Ro'yxatdan o'tdi: {{ results.owner.created_at }}</div>
+            </div>
+            <div>
+                <div class="label text-micro text-disabled uppercase mb-4" style="margin-bottom: var(--sp-2);">Telegram ID</div>
+                <code>{{ results.owner.telegram_id }}</code>
+            </div>
+        </div>
+    </div>
+
+    <!-- History Table -->
+    <div class="card">
+        <h3 class="mb-6" style="margin-bottom: var(--sp-6);">Xizmat ko'rsatish tarixi</h3>
+        <div class="table-container">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Sana</th>
+                        <th>Probeg</th>
+                        <th>Moy markasi</th>
+                        <th>STO markazi</th>
+                        <th>Keyingi (km)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for log in results.history %}
+                    <tr>
+                        <td class="text-mono">{{ log.date }}</td>
+                        <td class="text-mono">{{ log.mileage }} km</td>
+                        <td>{{ log.oil_brand }}</td>
+                        <td>{{ log.service_name }}</td>
+                        <td>
+                            <div class="flex flex-col">
+                                <span class="text-accent font-semibold">{{ log.next_change }} km</span>
+                                <span class="text-micro text-muted">+10 000 km</span>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% elif plate %}
+<div class="empty-state animate-fade-in">
+    <div class="empty-state-icon">
+        <i data-lucide="search-x"></i>
+    </div>
+    <h2>Avtomobil topilmadi</h2>
+    <p><b>{{ plate }}</b> raqamli avtomobil tizimda mavjud emas.<br>Raqam to'g'ri kiritilganini tekshiring.</p>
+    <button class="btn btn-secondary mt-6" style="margin-top: var(--sp-6);" onclick="document.getElementById('plate-input').focus()">
+        Qayta urinish
+    </button>
+</div>
+{% else %}
+<div class="empty-state animate-fade-in" style="opacity: 0.5;">
+    <div class="empty-state-icon">
+        <i data-lucide="car-front"></i>
+    </div>
+    <h2>Qidiruvni boshlang</h2>
+    <p>Avtomobil raqamini yuqoridagi maydonga kiriting.</p>
+</div>
+{% endif %}
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Plate Input Auto-formatting
+    const plateInput = document.getElementById('plate-input');
+    plateInput.addEventListener('input', function(e) {
+        let val = e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, '');
+        
+        // Basic formatting for Uzbekistan plates: 01A123BC or 01123ABC
+        // Format: XX AYYYBB
+        if (val.length > 2) {
+            val = val.slice(0, 2) + ' ' + val.slice(2);
+        }
+        if (val.length > 4) {
+             // Check if 3rd char is digit or letter to handle different styles
+             // But for simplicity, we just add space after first segment
+        }
+        
+        e.target.value = val;
+    });
+
+    // Animate Progress Ring
+    {% if results %}
+    window.addEventListener('DOMContentLoaded', () => {
+        const ring = document.getElementById('oil-progress-ring');
+        if (ring) {
+            const percent = {{ results.oil_percent }};
+            const circumference = 326.7; // 2 * PI * r (52)
+            const offset = circumference - (percent / 100 * circumference);
+            
+            setTimeout(() => {
+                ring.style.strokeDashoffset = offset;
+            }, 300);
+        }
+    });
+    {% endif %}
+</script>
+{% endblock %}

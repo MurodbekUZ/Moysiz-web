@@ -1,0 +1,176 @@
+{% extends "base.html" %}
+
+{% block title %}Foydalanuvchilar boshqaruvi{% endblock %}
+{% block header_title %}Foydalanuvchilar jurnali{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div>
+        <h2 class="mb-1" style="margin-bottom: var(--sp-1);">Foydalanuvchilar</h2>
+        <p class="text-small">Tizimda jami {{ stats.total_users }} ta foydalanuvchi mavjud</p>
+    </div>
+    <div class="flex gap-3">
+        <a href="{{ url_for('export_users') }}" class="btn btn-secondary">
+            <i data-lucide="download"></i>
+            <span>Eksport (Excel)</span>
+        </a>
+    </div>
+</div>
+
+<!-- Filters & Search Bar -->
+<div class="card mb-6" style="margin-bottom: var(--sp-6);">
+    <div class="filter-bar">
+        <div style="flex: 1; min-width: 250px;">
+            <div class="input-wrapper">
+                <i data-lucide="search" style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); width: 18px; color: var(--text-disabled);"></i>
+                <input type="text" id="user-search" class="input" style="padding-left: 40px;" placeholder="Ism, telefon yoki username bo'yicha qidirish...">
+            </div>
+        </div>
+        
+        <select class="input" style="width: auto;">
+            <option value="">Barcha rollar</option>
+            <option value="client">Haydovchilar</option>
+            <option value="service">STO markazlari</option>
+            <option value="store">Do'konlar</option>
+        </select>
+        
+        <select class="input" style="width: auto;">
+            <option value="">Barcha hududlar</option>
+            {% for reg, count in regions %}
+            <option value="{{ reg }}">{{ reg }}</option>
+            {% endfor %}
+        </select>
+        
+        <button class="btn btn-secondary">
+            <i data-lucide="filter"></i>
+            <span>Filtr</span>
+        </button>
+    </div>
+</div>
+
+<!-- Users Table -->
+<div class="table-container">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Foydalanuvchi</th>
+                <th>Roli</th>
+                <th>Hudud / Tuman</th>
+                <th>Telefon</th>
+                <th>Ro'yxatdan o'tgan</th>
+                <th>Holat</th>
+                <th>Amallar</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- This would be a loop in real app, here we show mock data for demo -->
+            <tr>
+                <td>
+                    <div class="flex items-center gap-3">
+                        <div class="avatar">AY</div>
+                        <div>
+                            <div class="font-semibold">Akmal Yusupov</div>
+                            <div class="text-micro text-disabled">@akmal_uz</div>
+                        </div>
+                    </div>
+                </td>
+                <td><span class="badge badge-client">Haydovchi</span></td>
+                <td>
+                    <div class="text-small">Toshkent</div>
+                    <div class="text-micro text-disabled">Chilonzor tumani</div>
+                </td>
+                <td class="text-mono">+998 90 111 22 33</td>
+                <td class="text-small">02.04.2026</td>
+                <td><span class="badge badge-active">Aktiv</span></td>
+                <td class="flex gap-2">
+                    <button class="btn btn-ghost" style="padding: 4px;"><i data-lucide="eye" size="18"></i></button>
+                    <button class="btn btn-ghost" style="padding: 4px;"><i data-lucide="edit-2" size="18"></i></button>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="flex items-center gap-3">
+                        <div class="avatar" style="background: var(--color-success);">MB</div>
+                        <div>
+                            <div class="font-semibold">MoyServis Pro</div>
+                            <div class="text-micro text-disabled">@moyservis_pro</div>
+                        </div>
+                    </div>
+                </td>
+                <td><span class="badge badge-service">STO Markazi</span></td>
+                <td>
+                    <div class="text-small">Samarqand</div>
+                    <div class="text-micro text-disabled">Pastdarg'om tumani</div>
+                </td>
+                <td class="text-mono">+998 93 444 55 66</td>
+                <td class="text-small">01.04.2026</td>
+                <td><span class="badge badge-active">Aktiv</span></td>
+                <td class="flex gap-2">
+                    <button class="btn btn-ghost" style="padding: 4px;"><i data-lucide="eye" size="18"></i></button>
+                    <button class="btn btn-ghost" style="padding: 4px;"><i data-lucide="edit-2" size="18"></i></button>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="flex items-center gap-3">
+                        <div class="avatar" style="background: var(--text-disabled);">SN</div>
+                        <div>
+                            <div class="font-semibold">Sardor Nosirov</div>
+                            <div class="text-micro text-disabled">@s_nosirov</div>
+                        </div>
+                    </div>
+                </td>
+                <td><span class="badge badge-client">Haydovchi</span></td>
+                <td>
+                    <div class="text-small">Farg'ona</div>
+                    <div class="text-micro text-disabled">Marg'ilon sh.</div>
+                </td>
+                <td class="text-mono">+998 99 888 77 66</td>
+                <td class="text-small">28.03.2026</td>
+                <td><span class="badge badge-inactive">Nofaol</span></td>
+                <td class="flex gap-2">
+                    <button class="btn btn-ghost" style="padding: 4px;"><i data-lucide="eye" size="18"></i></button>
+                    <button class="btn btn-ghost" style="padding: 4px;"><i data-lucide="edit-2" size="18"></i></button>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="flex items-center gap-3">
+                        <div class="avatar" style="background: var(--accent-secondary);">DD</div>
+                        <div>
+                            <div class="font-semibold">Diyor Do'kon</div>
+                            <div class="text-micro text-disabled">@diyor_store</div>
+                        </div>
+                    </div>
+                </td>
+                <td><span class="badge badge-store">Do'kon</span></td>
+                <td>
+                    <div class="text-small">Buxoro</div>
+                    <div class="text-micro text-disabled">G'ijduvon tumani</div>
+                </td>
+                <td class="text-mono">+998 90 555 33 11</td>
+                <td class="text-small">25.03.2026</td>
+                <td><span class="badge badge-active">Aktiv</span></td>
+                <td class="flex gap-2">
+                    <button class="btn btn-ghost" style="padding: 4px;"><i data-lucide="eye" size="18"></i></button>
+                    <button class="btn btn-ghost" style="padding: 4px;"><i data-lucide="edit-2" size="18"></i></button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<!-- Pagination Placeholder -->
+<div class="flex justify-between items-center mt-8" style="margin-top: var(--sp-8);">
+    <div class="text-small text-muted">Ko'rsatilmoqda: 1-10 (jami 1,234 tadan)</div>
+    <div class="flex gap-2">
+        <button class="btn btn-secondary btn-small" disabled><i data-lucide="chevron-left"></i></button>
+        <button class="btn btn-primary btn-small">1</button>
+        <button class="btn btn-secondary btn-small">2</button>
+        <button class="btn btn-secondary btn-small">3</button>
+        <span class="text-muted">...</span>
+        <button class="btn btn-secondary btn-small">124</button>
+        <button class="btn btn-secondary btn-small"><i data-lucide="chevron-right"></i></button>
+    </div>
+</div>
+{% endblock %}

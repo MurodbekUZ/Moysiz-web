@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MOYSIZ | Kirish</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/design-system.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/animations.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/components.css') }}">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <style>
+        body {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: radial-gradient(circle at top left, #11131f 0%, #0a0c14 100%);
+            overflow: hidden;
+            position: relative;
+        }
+        
+        /* Animated Background Elements */
+        .bg-blob {
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            background: var(--accent-primary);
+            filter: blur(120px);
+            opacity: 0.1;
+            border-radius: 50%;
+            z-index: 0;
+            animation: pulse 10s infinite alternate var(--ease-default);
+        }
+        
+        .blob-1 { top: -10%; left: -10%; background: var(--accent-primary); }
+        .blob-2 { bottom: -10%; right: -10%; background: var(--accent-secondary); }
+        
+        .login-card {
+            width: 100%;
+            max-width: 420px;
+            z-index: 1;
+            position: relative;
+        }
+        
+        .login-header {
+            text-align: center;
+            margin-bottom: var(--sp-8);
+        }
+        
+        .login-logo {
+            margin: 0 auto var(--sp-4);
+            display: flex;
+            justify-content: center;
+        }
+        
+        .input-wrapper {
+            position: relative;
+        }
+        
+        .toggle-password {
+            position: absolute;
+            right: var(--sp-4);
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-disabled);
+            cursor: pointer;
+            transition: var(--transition-colors);
+        }
+        
+        .toggle-password:hover {
+            color: var(--text-primary);
+        }
+        
+        .login-footer {
+            margin-top: var(--sp-8);
+            text-align: center;
+            color: var(--text-disabled);
+            font-size: var(--fs-small);
+        }
+    </style>
+</head>
+<body class="animate-fade-in">
+    <div class="bg-blob blob-1"></div>
+    <div class="bg-blob blob-2"></div>
+    
+    <div class="login-card animate-scale-in">
+        <div class="card">
+            <div class="login-header">
+                <div class="login-logo">
+                    <svg width="48" height="48" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M16 4L6 14V26C6 27.1046 6.89543 28 8 28H24C25.1046 28 26 27.1046 26 26V14L16 4Z" fill="url(#logo-gradient)"/>
+                        <path d="M16 10L10 16" stroke="white" stroke-width="2" stroke-linecap="round"/>
+                        <circle cx="16" cy="20" r="4" stroke="white" stroke-width="2"/>
+                        <defs>
+                            <linearGradient id="logo-gradient" x1="6" y1="4" x2="26" y2="28" gradientUnits="userSpaceOnUse">
+                                <stop stop-color="#3B82F6"/>
+                                <stop offset="1" stop-color="#6366F1"/>
+                            </linearGradient>
+                        </defs>
+                    </svg>
+                </div>
+                <h2>Boshqaruv paneli</h2>
+                <p>Tizimga kirish uchun kalitni kiriting</p>
+            </div>
+            
+            <form id="login-form" action="{{ url_for('login') }}" method="POST">
+                {% if error %}
+                <div class="badge badge-danger w-full animate-shake" style="margin-bottom: var(--sp-4); padding: var(--sp-2); justify-content: center;">
+                    {{ error }}/div>
+                {% endif %}
+                
+                <div class="form-group">
+                    <label class="label" for="token">Kirish kaliti</label>
+                    <div class="input-wrapper">
+                        <input type="password" id="token" name="token" class="input" placeholder="••••••••••••••••" required autofocus>
+                        <span class="toggle-password" id="toggle-token">
+                            <i data-lucide="eye"></i>
+                        </span>
+                    </div>
+                </div>
+                
+                <button type="submit" class="btn btn-primary w-full" id="login-btn">
+                    <span>Kirish</span>
+                    <i data-lucide="arrow-right"></i>
+                </button>
+            </form>
+            
+            <button class="btn btn-ghost w-full" style="margin-top: var(--sp-4);" id="biometric-btn">
+                <i data-lucide="fingerprint"></i>
+                <span>Face ID / Touch ID bilan kirish</span>
+            </button>
+        </div>
+        
+        <div class="login-footer">
+            <p>&copy; 2026 MOYSIZ Enterprise Edition</p>
+            <p>Xavfsiz ulanish ● SSL 256-bit</p>
+        </div>
+    </div>
+    
+    <script>
+        lucide.createIcons();
+        
+        const loginForm = document.getElementById('login-form');
+        const loginBtn = document.getElementById('login-btn');
+        const tokenInput = document.getElementById('token');
+        const toggleToken = document.getElementById('toggle-token');
+        
+        // Toggle password visibility
+        toggleToken.addEventListener('click', () => {
+            const type = tokenInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            tokenInput.setAttribute('type', type);
+            
+            // Update icon
+            const icon = toggleToken.querySelector('i');
+            if (type === 'text') {
+                icon.setAttribute('data-lucide', 'eye-off');
+            } else {
+                icon.setAttribute('data-lucide', 'eye');
+            }
+            lucide.createIcons();
+        });
+        
+        // Handle form submission loading state
+        loginForm.addEventListener('submit', (e) => {
+            loginBtn.disabled = true;
+            loginBtn.innerHTML = `
+                <span class="animate-spin">
+                    <i data-lucide="loader-2"></i>
+                </span>
+                <span>Tekshirilmoqda...</span>
+            `;
+            lucide.createIcons();
+        });
+        
+        // Biometric feedback placeholder
+        document.getElementById('biometric-btn').addEventListener('click', () => {
+             alert("Ushbu qurilmada biometrik ma'lumotlar faollashmagan yoki brauzer tomonidan qo'llab-quvvatlanmaydi.");
+        });
+        
+        // Shake on error if page reloaded with error
+        if (document.querySelector('.badge-danger')) {
+            document.querySelector('.card').classList.add('animate-shake');
+        }
+    </script>
+</body>
+</html>

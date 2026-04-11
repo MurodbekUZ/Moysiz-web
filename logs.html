@@ -1,0 +1,178 @@
+{% extends "base.html" %}
+
+{% block title %}Xizmatlar jurnali{% endblock %}
+{% block header_title %}Xizmatlar tarixi{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div>
+        <h2 class="mb-1" style="margin-bottom: var(--sp-1);">Xizmat ko'rsatish jurnali</h2>
+        <p class="text-small">Tizimda barcha avtomobillarga ko'rsatilgan xizmatlar tarixi</p>
+    </div>
+    <div class="flex gap-3">
+        <a href="{{ url_for('export_logs') }}" class="btn btn-secondary">
+            <i data-lucide="download"></i>
+            <span>Eksport (Excel)</span>
+        </a>
+    </div>
+</div>
+
+<!-- Advanced Filters -->
+<div class="card mb-6" style="margin-bottom: var(--sp-6);">
+    <div class="filter-bar">
+        <div style="flex: 2; min-width: 200px;">
+            <div class="label" style="font-size: var(--fs-micro); color: var(--text-disabled); margin-bottom: 4px;">Qidiruv</div>
+            <div class="input-wrapper">
+                <i data-lucide="search" style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); width: 16px; color: var(--text-disabled);"></i>
+                <input type="text" class="input" style="padding-left: 36px;" placeholder="Raqam yoki STO nomi...">
+            </div>
+        </div>
+        
+        <div style="flex: 1;">
+            <div class="label" style="font-size: var(--fs-micro); color: var(--text-disabled); margin-bottom: 4px;">Hudud</div>
+            <select class="input">
+                <option value="">Barcha hududlar</option>
+                {% for reg, count in regions %}
+                <option value="{{ reg }}">{{ reg }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        
+        <div style="flex: 1;">
+            <div class="label" style="font-size: var(--fs-micro); color: var(--text-disabled); margin-bottom: 4px;">Moy markasi</div>
+            <select class="input">
+                <option value="">Barcha markalar</option>
+                <option value="Castrol">Castrol</option>
+                <option value="Shell">Shell</option>
+                <option value="Mobil">Mobil</option>
+                <option value="Liqui Moly">Liqui Moly</option>
+            </select>
+        </div>
+        
+        <div style="flex: 1;">
+            <div class="label" style="font-size: var(--fs-micro); color: var(--text-disabled); margin-bottom: 4px;">Sana oralig'i</div>
+            <input type="date" class="input">
+        </div>
+        
+        <div style="align-self: flex-end;">
+            <button class="btn btn-primary" style="padding: var(--sp-3) var(--sp-4);">
+                <i data-lucide="filter"></i>
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Logs Table -->
+<div class="table-container">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Sana</th>
+                <th>Avtomobil</th>
+                <th>Ega / Haydovchi</th>
+                <th>STO markazi</th>
+                <th>Probeg</th>
+                <th>Moy / Turi</th>
+                <th>Keyingi (km)</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Mock Data -->
+            <tr>
+                <td class="text-small">
+                    <div class="font-semibold">08.04.2026</div>
+                    <div class="text-micro text-disabled">14:25</div>
+                </td>
+                <td><code class="text-h3" style="font-size: var(--fs-body);">90 Q123AA</code></td>
+                <td>
+                    <div class="text-small">Akmal Yusupov</div>
+                    <div class="text-micro">+998 90 111 22 33</div>
+                </td>
+                <td>
+                    <div class="text-small">MoyServis Pro</div>
+                    <div class="text-micro text-disabled">Samarqand</div>
+                </td>
+                <td class="text-mono">82 094 km</td>
+                <td>
+                    <div class="text-small">Castrol Edge</div>
+                    <div class="text-micro text-disabled">5W-30 Synthetic</div>
+                </td>
+                <td>
+                    <div class="text-accent font-bold">92 094 km</div>
+                    <div class="text-micro text-success">Zaxira: 10 000 km</div>
+                </td>
+            </tr>
+            <tr>
+                <td class="text-small">
+                    <div class="font-semibold">07.04.2026</div>
+                    <div class="text-micro text-disabled">10:40</div>
+                </td>
+                <td><code class="text-h3" style="font-size: var(--fs-body);">01 A777BA</code></td>
+                <td>
+                    <div class="text-small">Sardor Aliev</div>
+                    <div class="text-micro">+998 94 555 11 22</div>
+                </td>
+                <td>
+                    <div class="text-small">AvtoLider</div>
+                    <div class="text-micro text-disabled">Toshkent</div>
+                </td>
+                <td class="text-mono">45 600 km</td>
+                <td>
+                    <div class="text-small">Shell Helix Ultra</div>
+                    <div class="text-micro text-disabled">5W-40 Synthetic</div>
+                </td>
+                <td>
+                    <div class="text-accent font-bold">55 600 km</div>
+                    <div class="text-micro text-success">Zaxira: 10 000 km</div>
+                </td>
+            </tr>
+            <tr>
+                <td class="text-small">
+                    <div class="font-semibold">06.04.2026</div>
+                    <div class="text-micro text-disabled">17:10</div>
+                </td>
+                <td><code class="text-h3" style="font-size: var(--fs-body);">20 Z999YY</code></td>
+                <td>
+                    <div class="text-small">Javohir Toshpulatov</div>
+                    <div class="text-micro">+998 90 999 88 77</div>
+                </td>
+                <td>
+                    <div class="text-small">Mobil Center</div>
+                    <div class="text-micro text-disabled">Navoiy</div>
+                </td>
+                <td class="text-mono">124 300 km</td>
+                <td>
+                    <div class="text-small">Mobil 1 ESP</div>
+                    <div class="text-micro text-disabled">5W-30 Synthetic</div>
+                </td>
+                <td>
+                    <div class="text-accent font-bold">134 300 km</div>
+                    <div class="text-micro text-success">Zaxira: 10 000 km</div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<!-- Table Actions -->
+<div class="flex justify-between items-center mt-8" style="margin-top: var(--sp-8);">
+    <div class="flex items-center gap-4">
+        <span class="text-small text-muted">Satrlar soni:</span>
+        <select class="input" style="padding: 4px 8px; width: auto;">
+            <option value="25">25</option>
+            <option value="50">50</option>
+            <option value="100">100</option>
+        </select>
+    </div>
+    
+    <div class="flex gap-2">
+        <button class="btn btn-secondary btn-small" disabled><i data-lucide="chevron-left"></i></button>
+        <button class="btn btn-primary btn-small">1</button>
+        <button class="btn btn-secondary btn-small">2</button>
+        <button class="btn btn-secondary btn-small">3</button>
+        <span class="text-muted">...</span>
+        <button class="btn btn-secondary btn-small">48</button>
+        <button class="btn btn-secondary btn-small"><i data-lucide="chevron-right"></i></button>
+    </div>
+</div>
+{% endblock %}

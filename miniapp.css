@@ -1,0 +1,158 @@
+/* ============================================================
+   MOYSIZ Telegram Mini App
+   OCR Scanner Interface for Odometer Capture
+   ============================================================ */
+
+body.miniapp-body {
+    background: #000;
+    color: #fff;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* ---------- Camera Viewport ---------- */
+.viewport-container {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+    background: #111;
+}
+
+#camera-stream {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* ---------- OCR Overlay ---------- */
+.scanner-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+    z-index: 10;
+}
+
+.scan-frame {
+    width: 80%;
+    height: 45%;
+    border: 2px solid var(--accent-primary);
+    border-radius: var(--border-radius-lg);
+    box-shadow: 0 0 0 2000px rgba(0, 0, 0, 0.6);
+    position: relative;
+    transition: var(--duration-normal);
+}
+
+.scan-frame::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; width: 20px; height: 20px;
+    border-top: 4px solid #fff; border-left: 4px solid #fff;
+    border-radius: 4px 0 0 0;
+}
+
+.scan-frame::after {
+    content: '';
+    position: absolute;
+    bottom: 0; right: 0; width: 20px; height: 20px;
+    border-bottom: 4px solid #fff; border-right: 4px solid #fff;
+    border-radius: 0 0 4px 0;
+}
+
+/* Scanning Line Animation */
+.scan-line {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(to right, transparent, var(--accent-primary), transparent);
+    box-shadow: 0 0 8px var(--accent-primary);
+    animation: scanLineMove 2s infinite linear;
+}
+
+@keyframes scanLineMove {
+    0% { top: 0; }
+    50% { top: 100%; }
+    100% { top: 0; }
+}
+
+/* ---------- HUD & Controls ---------- */
+.scanner-hud {
+    position: absolute;
+    top: var(--sp-6);
+    left: 0;
+    right: 0;
+    text-align: center;
+    z-index: 20;
+}
+
+.scanner-controls {
+    padding: var(--sp-8);
+    background: var(--bg-card-solid);
+    border-top: 1px solid var(--border-default);
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-4);
+    z-index: 30;
+}
+
+.btn-scan {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #000;
+    margin: 0 auto;
+    border: 6px solid rgba(255, 255, 255, 0.2);
+    transition: var(--transition-all);
+}
+
+.btn-scan:active {
+    transform: scale(0.9);
+}
+
+/* ---------- Result View ---------- */
+.result-layer {
+    position: absolute;
+    inset: 0;
+    background: var(--bg-card-solid);
+    z-index: 100;
+    display: none; /* Controlled by JS */
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: var(--sp-8);
+    text-align: center;
+}
+
+.result-layer.active {
+    display: flex;
+    animation: fadeIn var(--duration-normal);
+}
+
+.result-mileage {
+    font-size: 3rem;
+    font-weight: var(--fw-bold);
+    font-family: var(--font-mono);
+    margin-bottom: var(--sp-2);
+}
+
+.captured-image-preview {
+    width: 100%;
+    max-height: 200px;
+    object-fit: contain;
+    border-radius: var(--border-radius-md);
+    margin-bottom: var(--sp-6);
+    border: 1px solid var(--border-default);
+}
