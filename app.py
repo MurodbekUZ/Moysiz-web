@@ -61,7 +61,7 @@ def require_admin(f):
 
 # --- Routes ---
 
-@app.route("/landing")
+@app.route("/")
 def landing():
     return render_template("landing.html")
 
@@ -82,7 +82,7 @@ def logout():
     session.clear()
     return redirect(url_for("landing"))
 
-@app.route("/")
+@app.route("/dashboard")
 @require_admin
 def dashboard():
     return render_template("dashboard.html", 
