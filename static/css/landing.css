@@ -264,20 +264,20 @@
     border-top: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-/* Specific Positions - Compressed to fit neon map visual */
-.hotspot-nukus         { top: 30%; left: 20%; }
-.hotspot-xorazm        { top: 48%; left: 22%; }
-.hotspot-navoi         { top: 40%; left: 50%; }
-.hotspot-bukhara       { top: 55%; left: 45%; }
-.hotspot-samarkand     { top: 60%; left: 58%; }
-.hotspot-qashqadaryo   { top: 72%; left: 52%; }
-.hotspot-jizzax        { top: 50%; left: 62%; }
-.hotspot-sirdaryo      { top: 45%; left: 68%; }
-.hotspot-tashkent-vil  { top: 32%; left: 76%; }
-.hotspot-tashkent-city { top: 38%; left: 78%; }
-.hotspot-namangan      { top: 42%; left: 86%; }
-.hotspot-andijan       { top: 50%; left: 90%; }
-.hotspot-fergana       { top: 58%; left: 84%; }
+/* Specific Positions - Aligned to Uzbekistan map outline */
+.hotspot-nukus         { top: 32%; left: 23%; }
+.hotspot-xorazm        { top: 47%; left: 25%; }
+.hotspot-navoi         { top: 51%; left: 46%; }
+.hotspot-bukhara       { top: 57%; left: 41%; }
+.hotspot-samarkand     { top: 58%; left: 55%; }
+.hotspot-qashqadaryo   { top: 67%; left: 50%; }
+.hotspot-jizzax        { top: 52%; left: 60%; }
+.hotspot-sirdaryo      { top: 48%; left: 64%; }
+.hotspot-tashkent-vil  { top: 41%; left: 67%; }
+.hotspot-tashkent-city { top: 44%; left: 71%; }
+.hotspot-namangan      { top: 48%; left: 76%; }
+.hotspot-andijan       { top: 52%; left: 82%; }
+.hotspot-fergana       { top: 56%; left: 78%; }
 
 .map-overlay-text {
     position: absolute;
